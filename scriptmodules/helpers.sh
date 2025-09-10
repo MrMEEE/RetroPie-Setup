@@ -335,6 +335,11 @@ function _mapPackage() {
                 pkg="libfreetype-dev"
             fi
             ;;
+        lsb-release)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="lsb_release"
+            fi
+            ;;
     esac
     echo "$pkg"
 }
@@ -411,6 +416,8 @@ function getDepends() {
     for pkg in ${own_pkgs[@]}; do
        rp_callModule "$pkg" _auto_
     done
+
+    echo "Installing missing packages: ${apt_pkgs[*]}"
 
     aptInstall --no-install-recommends "${apt_pkgs[@]}"
 

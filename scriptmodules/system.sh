@@ -158,10 +158,9 @@ function conf_build_vars() {
 function get_os_version() {
     # make sure lsb_release is installed
     # default Debian systems
-    
+    getDepends lsb_release
     if [ -f /etc/redhat-release ]; then
         __os_package_variant="rpm"
-        getDepends lsb_release
         getDepends rpmdevtools
     else
         __os_package_variant="deb"
