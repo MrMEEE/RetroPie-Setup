@@ -232,7 +232,7 @@ function aptUpdate() {
 function aptInstall() {
     aptUpdate
     if [[ "$__os_package_variant" == "deb" ]]; then
-        apt-get install -y "$@"
+        apt-get install -y --no-install-recommends "$@"
     elif [[ "$__os_package_variant" == "rpm" ]]; then
         echo "dnf install -y "$@""
         dnf install -y "$@"
@@ -420,7 +420,7 @@ function getDepends() {
 
     echo "Installing missing packages: ${apt_pkgs[*]}"
 
-    aptInstall --no-install-recommends "${apt_pkgs[@]}"
+    aptInstall "${apt_pkgs[@]}"
 
     local failed=()
     # check the required packages again rather than return code of apt-get,
