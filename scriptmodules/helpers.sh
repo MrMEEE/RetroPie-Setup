@@ -351,7 +351,7 @@ function _mapPackage() {
                 pkg="gcc-c++"
             fi
             ;;
-        dirmgr)
+        dirmngr)
             if [[ "$__os_package_variant" == "rpm" ]]; then
                 pkg="gnupg2"
             fi
