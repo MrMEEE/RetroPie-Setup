@@ -195,7 +195,6 @@ function hasPackage() {
         fi
     fi
     
-
     local installed=0
     [[ "$status" == *"ok installed" ]] && installed=1
     # if we are not checking version
@@ -677,7 +676,22 @@ function diffFiles() {
 ## @retval 0 if the comparison was true
 ## @retval 1 if the comparison was false
 function compareVersions() {
-    dpkg --compare-versions "$1" "$2" "$3" >/dev/null
+    if [[ "$__os_package_variant" == "dev" ]]; then
+        dpkg --compare-versions "$1" "$2" "$3" >/dev/null
+    elif [[ "$__os_package_variant" == "rpm" ]]; then
+        rpmdev-vercmp "$1" "$3" >/dev/null
+        local ret=$?
+        case "$2" in
+            lt) [[ "$ret" -eq 12 ]] && return 0 ;;
+            le) [[ "$ret" -eq 12 || "$ret" -eq 0 ]] && return 0 ;;
+            eq) [[ "$ret" -eq 0 ]] && return 0 ;;
+            ne) [[ "$ret" -ne 0 ]] && return 0 ;;
+            ge) [[ "$ret" -eq 10 || "$ret" -eq 0 ]] && return 0 ;;
+            gt) [[ "$ret" -eq 10 ]] && return 0 ;;
+            *) return 1 ;;
+        esac
+        return 1
+    fi
     return $?
 }
 

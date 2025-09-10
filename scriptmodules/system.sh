@@ -160,6 +160,7 @@ function get_os_version() {
         getDepends lsb-release
     elif [[ "$__os_package_variant" == "rpm" ]]; then
         getDepends lsb_release
+        getDepends rpmdevtools # Needed for comparing versions
     fi
     # get os distributor id, description, release number and codename
     local os
