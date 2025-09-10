@@ -346,6 +346,16 @@ function _mapPackage() {
                 pkg="gcc gcc-c++ make cmake"
             fi
             ;;
+        "g++")
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="gcc-c++"
+            fi
+            ;;
+        dirmgr)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="gnupg2"
+            fi
+            ;;
     esac
     echo "$pkg"
 }
