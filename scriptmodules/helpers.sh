@@ -310,6 +310,9 @@ function _mapPackage() {
             rp_isEnabled "sdl1" && pkg="RP sdl1 $pkg"
             ;;
         libsdl2-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="SDL2-devel"
+            fi
             if rp_isEnabled "sdl2"; then
                 # check whether to use our own sdl2 - can be disabled to resolve issues with
                 # mixing custom 64bit sdl2 and os distributed i386 version on multiarch
@@ -325,8 +328,6 @@ function _mapPackage() {
                     own_sdl2=0
                 fi
                 [[ "$own_sdl2" -eq 1 ]] && pkg="RP sdl2 $pkg"
-            elif [[ "$__os_package_variant" == "rpm" ]]; then
-                pkg="SDL2-devel"
             fi
             ;;
         libfreetype6-dev)
