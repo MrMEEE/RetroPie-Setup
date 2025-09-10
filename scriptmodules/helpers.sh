@@ -208,7 +208,9 @@ function hasPackage() {
 ## @brief Calls apt-get update (if it has not been called before).
 function aptUpdate() {
     if [[ "$__apt_update" != "1" ]]; then
-        apt-get update --allow-releaseinfo-change
+        if [[ "$__os_package_variant" == "deb" ]]; then
+            apt-get update --allow-releaseinfo-change
+        fi
         __apt_update="1"
     fi
 }
@@ -218,7 +220,11 @@ function aptUpdate() {
 ## @brief Calls apt-get install with the packages provided.
 function aptInstall() {
     aptUpdate
-    apt-get install -y "$@"
+    if [[ "$__os_package_variant" == "deb" ]]; then
+        apt-get install -y "$@"
+    elif [[ "$__os_package_variant" == "rpm" ]]; then
+        dnf install -y "$@"
+    fi
     return $?
 }
 
@@ -227,7 +233,11 @@ function aptInstall() {
 ## @brief Calls apt-get remove with the packages provided.
 function aptRemove() {
     aptUpdate
-    apt-get remove -y "$@"
+    if [[ "$__os_package_variant" == "deb" ]]; then
+        apt-get remove -y "$@"
+    elif [[ "$__os_package_variant" == "rpm" ]]; then
+        dnf remove -y "$@"
+    fi
     return $?
 }
 
@@ -265,6 +275,11 @@ function _mapPackage() {
                 local branch="$(grep -oP "BRANCH=\K.*"      /etc/armbian-release)"
                 local family="$(grep -oP "LINUXFAMILY=\K.*" /etc/armbian-release)"
                 pkg="linux-headers-${branch}-${family}"
+            elif [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="kernel-devel"
+            elif [[ "$__os_debian_ver" -ge 12 ]] || compareVersions "$__os_ubuntu_ver" ge 22.04; then
+                # on Debian bookworm and later, and Ubuntu 22.04 and later, we can use the generic package
+                pkg="linux-headers-$(uname -r)"
             elif [[ -z "$__os_ubuntu_ver" ]]; then
                 pkg="linux-headers-$(uname -r)"
             else
@@ -273,7 +288,11 @@ function _mapPackage() {
             ;;
         # map libpng-dev to libpng12-dev for Jessie
         libpng-dev)
-            [[ "$__os_debian_ver" -lt 9 ]] && pkg="libpng12-dev"
+            if [[ "$__os_debian_ver" -lt 9 ]]; then 
+                pkg="libpng12-dev"
+            elif [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libpng-devel"
+            fi
             ;;
         libsdl1.2-dev)
             rp_isEnabled "sdl1" && pkg="RP sdl1 $pkg"
@@ -297,7 +316,13 @@ function _mapPackage() {
             fi
             ;;
         libfreetype6-dev)
-            [[ "$__os_debian_ver" -gt 10 ]] || compareVersions "$__os_ubuntu_ver" gt 23.04 && pkg="libfreetype-dev"
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="freetype-devel"
+            elif [[ "$__os_debian_ver" -gt 10 ]]; then
+                pkg="libfreetype-dev" 
+            elif compareVersions "$__os_ubuntu_ver" gt 23.04; then
+                pkg="libfreetype-dev"
+            fi
             ;;
     esac
     echo "$pkg"
@@ -359,8 +384,13 @@ function getDepends() {
         for pkg in ${own_pkgs[@]}; do
             rp_callModule "$pkg" remove
         done
-        apt-get remove --purge -y "${apt_pkgs[@]}"
-        apt-get autoremove --purge -y
+        if [[ "$__os_package_variant" == "rpm" ]]; then
+            yum remove -y "${apt_pkgs[@]}"
+            yum autoremove -y
+        elif
+            apt-get remove --purge -y "${apt_pkgs[@]}"
+            apt-get autoremove --purge -y
+        fi
         return 0
     fi
 
@@ -384,7 +414,9 @@ function getDepends() {
                 mv /etc/init.d/smbd /etc/init.d/smbd.old
                 echo "#!/bin/sh" >/etc/init.d/smbd
                 chmod u+x /etc/init.d/smbd
-                apt-get -f install
+                if [[ "$__os_package_variant" == "deb" ]]; then
+                    apt-get -f install
+                fi
                 mv /etc/init.d/smbd.old /etc/init.d/smbd
             else
                 failed+=("$pkg")

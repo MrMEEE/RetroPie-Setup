@@ -166,6 +166,9 @@ function get_os_version() {
     __os_release="${os[2]}"
     __os_codename="${os[3]}"
 
+    # default Debian systems
+    __os_package_variant="deb"
+
     local error=""
     case "$__os_id" in
         Raspbian|Debian|Bunsenlabs)
@@ -308,10 +311,13 @@ function get_os_version() {
             __os_debian_ver="12"
             ;;
         RedHatEnterprise)
+            __os_package_variant="rpm"
             if compareVersions "$__os_release" lt 10.0; then
                 error="You need Red Hat Enterprise Linux 10 or newer"
+            elif compareVersions "${__os_release%%.*}" eq 10; then
+                __os_redhat_ver="${__os_release%%.*}"
             fi
-            __os_redhat_ver="${__os_release%%.*}"
+            
         *)
             error="Unsupported OS"
             ;;
