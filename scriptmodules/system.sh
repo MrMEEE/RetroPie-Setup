@@ -175,6 +175,7 @@ function get_os_version() {
     __os_package_variant="deb"
 
     local error=""
+    echo $__os_id
     case "$__os_id" in
         Raspbian|Debian|Bunsenlabs)
             # get major version (8 instead of 8.0 etc)
