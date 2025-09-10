@@ -302,7 +302,8 @@ function _mapPackage() {
         libpng-dev)
             if [[ "$__os_debian_ver" -lt 9 ]]; then 
                 pkg="libpng12-dev"
-            elif [[ "$__os_package_variant" == "rpm" ]]; then
+            fi
+            if [[ "$__os_package_variant" == "rpm" ]]; then
                 pkg="libpng-devel"
             fi
             ;;
