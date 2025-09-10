@@ -309,10 +309,11 @@ function _mapPackage() {
         libpng12-dev)
             if [[ "$__os_debian_ver" -lt 9 ]]; then 
                 pkg="libpng12-dev"
-            elif [[ "$__os_package_variant" == "rpm" ]]; then
-                pkg="libpng-devel"
             else
                 pkg="libpng-dev"
+            fi
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libpng-devel"
             fi
             ;;
         libsdl1.2-dev)
@@ -471,6 +472,16 @@ function _mapPackage() {
         libxkbcommon-dev)
             if [[ "$__os_package_variant" == "rpm" ]]; then
                 pkg="libxkbcommon-devel"
+            fi
+            ;;
+        python3-uinput)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="python3-python-uinput"
+            fi
+            ;;
+        libglew-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="glew-devel"
             fi
             ;;
     esac
