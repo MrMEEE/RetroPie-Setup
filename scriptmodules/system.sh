@@ -156,8 +156,11 @@ function conf_build_vars() {
 
 function get_os_version() {
     # make sure lsb_release is installed
-    getDepends lsb-release
-
+    if [[ "$__os_package_variant" == "deb" ]]; then
+        getDepends lsb-release
+    elif [[ "$__os_package_variant" == "rpm" ]]; then
+        getDepends lsb_release
+    fi
     # get os distributor id, description, release number and codename
     local os
     # armbian uses a minimal shell script replacement for lsb_release with basic
