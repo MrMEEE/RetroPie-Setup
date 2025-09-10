@@ -167,7 +167,10 @@ function get_os_version() {
     # parameter parsing that requires the arguments split rather than using -sidrc
     mapfile -t os < <(lsb_release -s -i -d -r -c)
     if [[ "$(echo ${os[0]} | cut -f1 -d' ')" == "RedHatEnterprise" ]]; then
-        echo "RHEL Detected"
+        __os_id=echo $os | cut -f1 -d' '
+        __os_desc=echo $os | cut -f2 -d' '
+        __os_release=echo $os | cut -f3 -d' '
+        __os_codename=echo $os | cut -f4 -d' '
     else
         __os_id="${os[0]}"
         __os_desc="${os[1]}"
