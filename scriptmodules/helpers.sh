@@ -341,6 +341,11 @@ function _mapPackage() {
                 pkg="lsb_release"
             fi
             ;;
+        build-essential)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="gcc gcc-c++ make cmake"
+            fi
+            ;;
     esac
     echo "$pkg"
 }
