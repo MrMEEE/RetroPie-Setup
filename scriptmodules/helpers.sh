@@ -190,7 +190,7 @@ function hasPackage() {
             status="${out% *}"
         fi
     elif [[ "$__os_package_variant" == "rpm" ]]; then
-        local out=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}\n' "$1" 2>/dev/null | head -n1)
+        local out=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}\n' "$1" 2>/dev/null)
         if [[ "$?" -eq 0 ]]; then
             ver="${out##* }"
             status="ok installed"
