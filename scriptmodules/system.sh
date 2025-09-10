@@ -158,14 +158,14 @@ function conf_build_vars() {
 function get_os_version() {
     # make sure lsb_release is installed
     # default Debian systems
-    getDepends lsb-release
     if [ -f /etc/redhat-release ]; then
         __os_package_variant="rpm"
         getDepends rpmdevtools
     else
         __os_package_variant="deb"
     fi
-    
+    getDepends lsb-release
+
     # get os distributor id, description, release number and codename
     local os
     # armbian uses a minimal shell script replacement for lsb_release with basic
