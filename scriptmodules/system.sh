@@ -203,7 +203,7 @@ function get_os_version() {
             if grep -q "ID=osmc" /etc/os-release; then
                 __platform_flags+=(osmc)
             fi
-
+__os_package_variant="rpm"
             # and for xbian
             if grep -q "NAME=XBian" /etc/os-release; then
                 __platform_flags+=(xbian)
@@ -319,8 +319,9 @@ function get_os_version() {
             __os_debian_ver="12"
             ;;
         RedHatEnterprise)
-            getDepends rpmdevtools
             __os_package_variant="rpm"
+            getDepends rpmdevtools
+            
             if compareVersions "$__os_release" lt 10.0; then
                 error="You need Red Hat Enterprise Linux 10 or newer"
             elif compareVersions "${__os_release%%.*}" eq 10; then
