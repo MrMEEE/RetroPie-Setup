@@ -307,6 +307,11 @@ function get_os_version() {
         Kali)
             __os_debian_ver="12"
             ;;
+        RedHatEnterprise)
+            if compareVersions "$__os_release" lt 10.0; then
+                error="You need Red Hat Enterprise Linux 10 or newer"
+            fi
+            __os_redhat_ver="${__os_release%%.*}"
         *)
             error="Unsupported OS"
             ;;
