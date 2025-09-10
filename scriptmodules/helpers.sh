@@ -231,6 +231,7 @@ function aptInstall() {
     if [[ "$__os_package_variant" == "deb" ]]; then
         apt-get install -y "$@"
     elif [[ "$__os_package_variant" == "rpm" ]]; then
+        echo "dnf install -y "$@""
         dnf install -y "$@"
     fi
     return $?
@@ -373,7 +374,7 @@ function getDepends() {
                 all_pkgs+=("$pkg")
             fi
         else
-            # add package to apt_pkgs for installation if not installed
+            # add package to apt_pkgs for insgetDeptallation if not installed
             if ! hasPackage "$pkg"; then
                 apt_pkgs+=("$pkg")
                 all_pkgs+=("$pkg")
