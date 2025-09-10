@@ -15,7 +15,7 @@ function setup_env() {
     __INFMSGS=()
 
     # if no apt-get we need to fail
-    if [[ -z "$(which apt-get)" ]] and [[ -z "$(which dnf)" ]]; then
+    if [[ -z "$(which apt-get)" ]] && [[ -z "$(which dnf)" ]]; then
       fatalError "Unsupported OS - No apt-get or dnf command found"
     fi
 
