@@ -182,15 +182,16 @@ function hasPackage() {
 
     local ver
     local status
+    local out
     # extract the first line only (for cases where both amd64 & i386 versions of a package are installed)
     if [[ "$__os_package_variant" == "deb" ]]; then
-        local out=$(dpkg-query -W --showformat='${Status} ${Version}\n' $1 2>/dev/null | head -n1)
+        out=$(dpkg-query -W --showformat='${Status} ${Version}\n' $1 2>/dev/null | head -n1)
         if [[ "$?" -eq 0 ]]; then
             ver="${out##* }"
             status="${out% *}"
         fi
     elif [[ "$__os_package_variant" == "rpm" ]]; then
-        local out=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}\n' "$1") #  2>/dev/null
+        out=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}\n' "$1" 2>/dev/null | head -n1) 
         if [[ "$?" -eq 0 ]]; then
             ver="${out##* }"
             status="ok installed"
