@@ -299,11 +299,20 @@ function _mapPackage() {
             fi
             ;;
         # map libpng-dev to libpng12-dev for Jessie
-        libpng-dev|libpng12-dev)
+        libpng-dev)
             if [[ "$__os_debian_ver" -lt 9 ]]; then 
                 pkg="libpng12-dev"
             elif [[ "$__os_package_variant" == "rpm" ]]; then
                 pkg="libpng-devel"
+            fi
+            ;;
+        libpng12-dev)
+            if [[ "$__os_debian_ver" -lt 9 ]]; then 
+                pkg="libpng12-dev"
+            elif [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libpng-devel"
+            else
+                pkg="libpng-dev"
             fi
             ;;
         libsdl1.2-dev)
@@ -437,6 +446,31 @@ function _mapPackage() {
         libfreeimage-dev)
             if [[ "$__os_package_variant" == "rpm" ]]; then
                 pkg="freeimage-devel"
+            fi
+            ;;
+        libpulse-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="pulseaudio-libs-devel"
+            fi
+            ;;
+        libudev-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="systemd-devel"
+            fi
+            ;;
+        libx11-xcb-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libX11-devel"
+            fi
+            ;;
+        libusb-1.0-0-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libusb1-devel"
+            fi
+            ;;
+        libxkbcommon-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libxkbcommon-devel"
             fi
             ;;
     esac
