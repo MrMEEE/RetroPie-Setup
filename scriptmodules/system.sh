@@ -317,7 +317,7 @@ function get_os_version() {
             elif compareVersions "${__os_release%%.*}" eq 10; then
                 __os_redhat_ver="${__os_release%%.*}"
             fi
-            
+            ;;
         *)
             error="Unsupported OS"
             ;;
