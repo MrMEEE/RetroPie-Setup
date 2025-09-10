@@ -690,6 +690,7 @@ function compareVersions() {
         dpkg --compare-versions "$1" "$2" "$3" >/dev/null
     elif [[ "$__os_package_variant" == "rpm" ]]; then
         rpmdev-vercmp "$1" "$3" >/dev/null
+        echo 'rpmdev-vercmp "$1" "$3"'
         local ret=$?
         case "$2" in
             lt) [[ "$ret" -eq 12 ]] && return 0 ;;
