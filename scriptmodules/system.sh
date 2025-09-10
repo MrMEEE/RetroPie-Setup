@@ -156,12 +156,7 @@ function conf_build_vars() {
 
 function get_os_version() {
     # make sure lsb_release is installed
-    if [[ "$__os_package_variant" == "deb" ]]; then
-        getDepends lsb-release
-    elif [[ "$__os_package_variant" == "rpm" ]]; then
-        getDepends lsb_release
-        getDepends rpmdevtools # Needed for comparing versions
-    fi
+    getDepends lsb-release
     # get os distributor id, description, release number and codename
     local os
     # armbian uses a minimal shell script replacement for lsb_release with basic
@@ -324,6 +319,7 @@ function get_os_version() {
             __os_debian_ver="12"
             ;;
         RedHatEnterprise)
+            getDepends rpmdevtools
             __os_package_variant="rpm"
             if compareVersions "$__os_release" lt 10.0; then
                 error="You need Red Hat Enterprise Linux 10 or newer"
