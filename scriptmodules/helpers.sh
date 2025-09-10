@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 # This file is part of The RetroPie Project
 #
 # The RetroPie Project is the legal property of its developers, whose names are

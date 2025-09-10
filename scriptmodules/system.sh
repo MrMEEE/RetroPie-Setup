@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash 
+set -x
 
 # This file is part of The RetroPie Project
 #
