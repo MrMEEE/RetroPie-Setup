@@ -299,7 +299,7 @@ function _mapPackage() {
             fi
             ;;
         # map libpng-dev to libpng12-dev for Jessie
-        libpng-dev)
+        libpng-dev|libpng12-dev)
             if [[ "$__os_debian_ver" -lt 9 ]]; then 
                 pkg="libpng12-dev"
             elif [[ "$__os_package_variant" == "rpm" ]]; then
@@ -325,6 +325,8 @@ function _mapPackage() {
                     own_sdl2=0
                 fi
                 [[ "$own_sdl2" -eq 1 ]] && pkg="RP sdl2 $pkg"
+            elif [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="SDL2-devel"
             fi
             ;;
         libfreetype6-dev)
@@ -354,6 +356,86 @@ function _mapPackage() {
         dirmngr)
             if [[ "$__os_package_variant" == "rpm" ]]; then
                 pkg="gnupg2"
+            fi
+            ;;
+        p7zip)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="7zip"
+            fi
+            ;;
+        libvulkan-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="vulkan-headers"
+            fi
+            ;;
+        libgl1-mesa-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="mesa-libGL-devel"
+            fi
+            ;;
+        libglu1-mesa-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="mesa-libGLU-devel"
+            fi
+            ;;
+        libvlc-dev|libvlccore-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="vlc-devel"
+            fi
+            ;;
+        gnome-terminal)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="xterm"
+            fi
+            ;;
+        mesa-utils)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="glx-utils"
+            fi 
+            ;;
+        libboost-filesystem-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="boost-devel"
+            fi
+            ;;
+        fonts-freefont-ttf)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="gnu-free-mono-fonts gnu-free-sans-fonts gnu-free-serif-fonts"
+            fi
+            ;;
+        libspeexdsp-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="speexdsp-devel"
+            fi
+            ;;
+        libsamplerate0-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libsamplerate-devel"
+            fi
+            ;;
+        python3-sdl2)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="python3-pysdl2"
+            fi
+            ;;
+        libsm-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libSM-devel"
+            fi
+            ;;
+        libasound2-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="alsa-lib-devel"
+            fi
+            ;;
+        libcurl4-openssl-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="libcurl-devel"
+            fi
+            ;;
+        libfreeimage-dev)
+            if [[ "$__os_package_variant" == "rpm" ]]; then
+                pkg="freeimage-devel"
             fi
             ;;
     esac
