@@ -387,7 +387,7 @@ function getDepends() {
         if [[ "$__os_package_variant" == "rpm" ]]; then
             yum remove -y "${apt_pkgs[@]}"
             yum autoremove -y
-        elif
+        elif [[ "$__os_package_variant" == "deb" ]]; then
             apt-get remove --purge -y "${apt_pkgs[@]}"
             apt-get autoremove --purge -y
         fi
