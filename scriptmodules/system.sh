@@ -15,7 +15,9 @@ function setup_env() {
     __INFMSGS=()
 
     # if no apt-get we need to fail
-    [[ -z "$(which apt-get)" ]] && fatalError "Unsupported OS - No apt-get command found"
+    if [[ -z "$(which apt-get)" ]] and [[ -z "$(which dnf)" ]]; then
+      fatalError "Unsupported OS - No apt-get or dnf command found"
+    fi
 
     test_chroot
 
